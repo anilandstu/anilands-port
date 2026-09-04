@@ -1,267 +1,228 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ANILANDSTU-PORT</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Permanent+Marker&family=Playfair+Display:ital,wght@1,600;1,700&family=Noto+Serif:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#1a1a1a;
-    --paper:#ffffff;
-    --blue:#1f5fd6;
-    --border-w:4px;
-  }
-
-  *{ box-sizing:border-box; }
-
-  html{ font-size:18px; }
-
-  body{
-    margin:0;
-    padding:clamp(24px,5vw,56px) clamp(16px,4vw,40px) clamp(40px,7vw,90px);
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Noto Serif', serif;
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    overflow-x:auto;
-  }
-
-  .page{
-    width:100%;
-    max-width:1280px;
-    min-width:640px;
-  }
-
-  .layout{
-    display:flex;
-    flex-direction:row;
-    flex-wrap:nowrap;
-    gap:clamp(20px,3.5vw,44px);
-    align-items:flex-start;
-  }
-
-  /* ---------- LEFT PANEL ---------- */
-  .left{
-    flex:1 1 63%;
-    min-width:0;
-  }
-
-  .title-box{
-    border:var(--border-w) solid var(--ink);
-    padding:30px 40px;
-    display:inline-block;
-    margin-bottom:36px;
-    width:100%;
-  }
-
-  .title-box h1{
-    margin:0;
-    font-family:'Permanent Marker', cursive;
-    font-size:clamp(30px, 3.6vw, 52px);
-    letter-spacing:1px;
-    text-align:center;
-    white-space:nowrap;
-  }
-
-  .tagline{
-    font-family:'Noto Serif', serif;
-    font-size:clamp(16px, 1.6vw, 22px);
-    line-height:1.65;
-    margin:0 0 46px;
-    max-width:640px;
-    color:#2a2a2a;
-  }
-
-  .index-heading{
-    font-family:'Permanent Marker', cursive;
-    font-size:clamp(28px, 2.6vw, 42px);
-    margin:0 0 34px;
-    letter-spacing:1px;
-  }
-
-  .entry{
-    margin-bottom:44px;
-  }
-
-  .entry-label{
-    font-family:'Noto Serif', serif;
-    font-size:clamp(15px, 1.4vw, 20px);
-    font-weight:600;
-    margin:0 0 16px;
-    line-height:1.55;
-    max-width:640px;
-    color:#1a1a1a;
-  }
-
-  .entry-label .bullet{
-    margin-right:8px;
-  }
-
-  .xem-btn{
-    display:inline-block;
-    border:var(--border-w) solid var(--ink);
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Kalam', cursive;
-    font-weight:700;
-    font-size:clamp(19px, 1.6vw, 24px);
-    padding:10px 44px;
-    cursor:pointer;
-    text-decoration:none;
-    transition:transform .12s ease, background .12s ease, color .12s ease;
-  }
-
-  .xem-btn:hover{
-    background:var(--ink);
-    color:var(--paper);
-    transform:translate(-2px,-2px);
-  }
-
-  .xem-btn:active{
-    transform:translate(0,0);
-  }
-
-  /* ---------- RIGHT PANEL ---------- */
-  .right{
-    flex:1 1 34%;
-    max-width:380px;
-  }
-
-  .patch-box{
-    border:var(--border-w) solid var(--ink);
-    padding:32px 34px 38px;
-  }
-
-  .patch-title{
-    font-family:'Playfair Display', serif;
-    font-style:italic;
-    font-weight:700;
-    font-size:clamp(34px, 3vw, 48px);
-    margin:0 0 26px;
-  }
-
-  .patch-item{
-    font-family:'Noto Serif', serif;
-    font-size:clamp(14px, 1.3vw, 19px);
-    line-height:1.55;
-    margin:0 0 24px;
-    color:#2a2a2a;
-  }
-
-  .patch-item:last-child{
-    margin-bottom:0;
-  }
-
-  .patch-link{
-    color:var(--blue);
-    text-decoration:underline;
-    cursor:pointer;
-  }
-
-  .patch-link:hover{
-    opacity:.75;
-  }
-
-  .note{
-    font-family:'Noto Serif', serif;
-    font-style:italic;
-    font-weight:600;
-    font-size:clamp(14px, 1.35vw, 19px);
-    line-height:1.6;
-    margin:34px 0 0;
-    color:#2a2a2a;
-  }
-
-  /* ---------- FOOTER ---------- */
-  .footer{
-    text-align:center;
-    margin-top:64px;
-  }
-
-  .footer-main{
-    font-family:'Noto Serif', serif;
-    font-weight:600;
-    font-size:clamp(14px, 1.35vw, 19px);
-    margin:0 0 8px;
-  }
-
-  .footer-sub{
-    font-family:'Noto Serif', serif;
-    font-size:13px;
-    color:#333;
-    margin:0;
-  }
-
-  @media (max-width: 700px){
-    .page{ min-width:600px; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký sơ tuyển</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background-color: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .card {
+      background: #ffffff;
+      max-width: 550px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      padding: 30px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 16px;
+    }
+    .header h2 {
+      color: #1e293b;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #334155;
+      font-size: 14px;
+    }
+    .input-wrapper {
+      position: relative;
+    }
+    .input-wrapper i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+    }
+    .input-wrapper input, 
+    .input-wrapper textarea {
+      width: 100%;
+      padding: 10px 12px 10px 38px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-wrapper textarea {
+      padding-top: 10px;
+      resize: vertical;
+      min-height: 80px;
+    }
+    .input-wrapper input:focus, 
+    .input-wrapper textarea:focus {
+      border-color: #2563eb;
+    }
+    .notice-box {
+      background-color: #eff6ff;
+      border-left: 4px solid #2563eb;
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #1e40af;
+      line-height: 1.5;
+    }
+    .notice-box ul {
+      list-style: none;
+    }
+    .notice-box li {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .notice-box li:last-child {
+      margin-bottom: 0;
+    }
+    .btn-submit {
+      width: 100%;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.2s;
+    }
+    .btn-submit:hover {
+      background-color: #1d4ed8;
+    }
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+    }
+  </style>
 </head>
 <body>
 
-<div class="page">
-
-  <div class="layout">
-
-    <!-- LEFT: main index -->
-    <div class="left">
-
-      <div class="title-box">
-        <h1>ANILANDSTU-PORT</h1>
-      </div>
-
-      <p class="tagline">-&gt; hãy tự do lựa chọn chính phong cách nghệ thuật mà bạn mơ ước...</p>
-
-      <h2 class="index-heading">INDEX OF/</h2>
-
-      <div class="entry">
-        <p class="entry-label"><span class="bullet">●</span>THÔNG BÁO VỀ VIỆC ĐĂNG KÝ BETA TESTER : ANILANDERS</p>
-        <a class="xem-btn" href="an.html">XEM</a>
-      </div>
-
-      <div class="entry">
-        <p class="entry-label"><span class="bullet">●</span>LỘ TRÌNH TRIỂN KHAI PHIÊN BẢN THỬ NGHIỆM</p>
-        <a class="xem-btn" href="rm.html">XEM</a>
-      </div>
-
-      <div class="entry">
-        <p class="entry-label"><span class="bullet">●</span>GIẢI ĐÁP THẮC MẮC PHỔ BIẾN</p>
-        <a class="xem-btn" href="qa.html">XEM</a>
-      </div>
-
-      <div class="entry">
-        <p class="entry-label"><span class="bullet">●</span>ĐIỀU KHOẢN VÀ CHÍNH SÁCH DỊCH VỤ ANILANDS.ONLINE</p>
-        <a class="xem-btn" href="tos.html">XEM</a>
-      </div>
-
-    </div>
-
-    <!-- RIGHT: patch notes -->
-    <div class="right">
-      <div class="patch-box">
-        <h2 class="patch-title">Patch-note</h2>
-
-        <p class="patch-item">●<a class="patch-link" href="pn.html">Xem thêm nhật ký bản vá lỗi...</a></p>
-        <p class="patch-item">●<a class="patch-link" href="upd.html">Xem thêm vấn đề cập nhật...</a></p>
-        <p class="patch-item">●<a class="patch-link" href="ans.html">Xem thêm hỗ trợ trả lời...</a></p>
-      </div>
-
-      <p class="note">*Đáp ứng các điều kiện trước khi nhà phát triển phê duyệt sẽ giúp ích cho tài khoản được xác minh một cách nhanh chóng và hiệu quả.</p>
-    </div>
-
+<div class="card">
+  <div class="header">
+    <h2><i class="fa-solid fa-file-pen" style="color: #2563eb;"></i> Biểu Mẫu Đăng Ký Sơ Tuyển</h2>
   </div>
+
+  <form id="registerForm">
+    <div class="form-group">
+      <label for="artistName">Tên Artist</label>
+      <div class="input-wrapper">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" id="artistName" placeholder="Nhập tên của bạn..." required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dob">Ngày / Tháng sinh</label>
+      <div class="input-wrapper">
+        <i class="fa-solid fa-calendar-days"></i>
+        <input type="text" id="dob" placeholder="DD/MM" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="facebook">Link Facebook</label>
+      <div class="input-wrapper">
+        <i class="fa-brands fa-facebook"></i>
+        <input type="url" id="facebook" placeholder="https://facebook.com/..." required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="bio">Giới thiệu bản thân</label>
+      <div class="input-wrapper">
+        <i class="fa-solid fa-comment-dots" style="top: 20px;"></i>
+        <textarea id="bio" placeholder="Mô tả ngắn về bản thân..." required></textarea>
+      </div>
+    </div>
+
+    <div class="notice-box">
+      <ul>
+        <li><i class="fa-solid fa-paperclip" style="margin-top: 2px;"></i> Hãy nhớ đính kèm vào email tranh bạn vẽ (tối thiểu 2 và tối đa 5).</li>
+        <li><i class="fa-solid fa-circle-check" style="margin-top: 2px;"></i> Bạn đồng ý các thỏa thuận về việc tham dự sự kiện.</li>
+        <li><i class="fa-solid fa-bell" style="margin-top: 2px;"></i> Chúng tôi sẽ liên hệ thông qua email và Facebook. Vui lòng kiểm tra thường xuyên và mở khóa trang Facebook cá nhân.</li>
+      </ul>
+    </div>
+
+    <button type="submit" class="btn-submit">
+      <i class="fa-solid fa-paper-plane"></i> Đăng Ký Qua Email
+    </button>
+  </form>
 
   <div class="footer">
-    <p class="footer-main">(c) 2026 Anilandstu_onl. All rights reserved. anilandstu.onl@gmail.com</p>
-    <p class="footer-sub">Đây là phiên bản Beta, tính năng có thể thay đổi và dịch vụ có thể xảy ra gián đoạn trong quá trình thử nghiệm.</p>
+    <p>Gửi bởi Ban quản lý Sự kiện, <strong>NTT</strong></p>
   </div>
-
 </div>
+
+<script>
+  document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Lấy thông tin từ các ô nhập
+    const name = document.getElementById('artistName').value;
+    const dob = document.getElementById('dob').value;
+    const fb = document.getElementById('facebook').value;
+    const bio = document.getElementById('bio').value;
+
+    const emailTo = "anilandstu.onl@gmail.com";
+    const subject = "Biểu mẫu đăng ký sơ tuyển - " + name;
+
+    // Soạn sẵn nội dung Email
+    const body = `Xin chào Artist,
+
+Tên Artist: ${name}
+Ngày/tháng sinh: ${dob}
+Link facebook: ${fb}
+Giới thiệu bản thân: ${bio}
+
+- [LƯU Ý] Tôi sẽ đính kèm tối thiểu 2 và tối đa 5 tranh vẽ vào email này.
+- Tôi đồng ý các thỏa thuận về việc tham dự sự kiện.
+- Tôi sẽ kiểm tra email/facebook thường xuyên và đảm bảo đã mở khóa trang facebook cá nhân.
+
+Gửi bởi Ban quản lý Sự kiện,
+NTT`;
+
+    // Tạo link mailto và chuyển hướng tới trình duyệt mail
+    const mailtoUrl = `mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoUrl;
+  });
+</script>
 
 </body>
 </html>
