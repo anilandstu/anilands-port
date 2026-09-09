@@ -1,228 +1,378 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đăng ký sơ tuyển</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-    }
-    body {
-      background-color: #f4f6f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .card {
-      background: #ffffff;
-      max-width: 550px;
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      padding: 30px;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
-      border-bottom: 2px solid #f0f0f0;
-      padding-bottom: 16px;
-    }
-    .header h2 {
-      color: #1e293b;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .form-group {
-      margin-bottom: 18px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
-      color: #334155;
-      font-size: 14px;
-    }
-    .input-wrapper {
-      position: relative;
-    }
-    .input-wrapper i {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #94a3b8;
-    }
-    .input-wrapper input, 
-    .input-wrapper textarea {
-      width: 100%;
-      padding: 10px 12px 10px 38px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .input-wrapper textarea {
-      padding-top: 10px;
-      resize: vertical;
-      min-height: 80px;
-    }
-    .input-wrapper input:focus, 
-    .input-wrapper textarea:focus {
-      border-color: #2563eb;
-    }
-    .notice-box {
-      background-color: #eff6ff;
-      border-left: 4px solid #2563eb;
-      padding: 12px 16px;
-      border-radius: 4px;
-      margin: 20px 0;
-      font-size: 13px;
-      color: #1e40af;
-      line-height: 1.5;
-    }
-    .notice-box ul {
-      list-style: none;
-    }
-    .notice-box li {
-      margin-bottom: 6px;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .notice-box li:last-child {
-      margin-bottom: 0;
-    }
-    .btn-submit {
-      width: 100%;
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background-color 0.2s;
-    }
-    .btn-submit:hover {
-      background-color: #1d4ed8;
-    }
-    .footer {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 13px;
-      color: #64748b;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANILANDS CUP — Artist Card</title>
+<style>
+*{box-sizing:border-box}
+:root{--ink:#17212b;--muted:#6b747b;--gold:#c99a45}
+body{
+  margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;
+  background:#f5f5f5;color:#20262b;padding:24px 12px 40px
+}
+.wrap{width:min(900px,100%);margin:auto}
+h1{margin:0 0 5px;text-align:center;font-size:20px;letter-spacing:1.5px}
+.sub{text-align:center;color:#777;font-size:12px;margin-bottom:18px}
+.panel{
+  background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.05)
+}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+label{font-size:11px;font-weight:bold;color:#555}
+input{
+  width:100%;height:40px;border:1px solid #ccc;border-radius:5px;
+  padding:0 10px;font-size:14px;background:#fff;outline:none
+}
+input:focus{border-color:#888}
+.file{padding:8px;height:auto}
+.actions{display:flex;gap:8px;margin-top:14px}
+button{
+  border:1px solid #222;border-radius:5px;padding:10px 15px;
+  font-weight:bold;cursor:pointer;background:#222;color:#fff
+}
+button.secondary{background:#fff;color:#222;border-color:#bbb}
+button:hover{opacity:.9}
+.photo-editor{
+  display:none;margin-top:12px;border-top:1px solid #eee;padding-top:12px
+}
+.photo-editor.show{display:block}
+.editor-label{font-size:11px;font-weight:bold;color:#555;margin-bottom:7px}
+.crop-area{
+  position:relative;width:180px;height:220px;margin:0 auto;
+  overflow:hidden;background:#e8e8e8;border:1px solid #aaa;
+  touch-action:none;cursor:grab
+}
+.crop-area.dragging{cursor:grabbing}
+.crop-area img{
+  position:absolute;max-width:none;user-select:none;-webkit-user-drag:none;
+  transform-origin:0 0
+}
+.controls{
+  width:180px;margin:10px auto 0;display:grid;grid-template-columns:1fr 1fr;
+  gap:7px
+}
+.controls button{padding:7px;font-size:11px;background:#fff;color:#333;border-color:#ccc}
+.controls .wide{grid-column:1/-1}
+.tip{text-align:center;font-size:10px;color:#888;margin-top:7px}
+.preview-title{text-align:center;font-size:11px;font-weight:bold;letter-spacing:1px;color:#777;margin:22px 0 9px}
+.card-shell{display:flex;justify-content:center}
+
+/* CARD — giữ nguyên thiết kế card */
+.artist-card{
+  position:relative;width:min(860px,100%);aspect-ratio:1.586/1;overflow:hidden;
+  border-radius:18px;background:linear-gradient(125deg,#f6f1e5 0%,#ece5d4 45%,#d9e0df 100%);
+  border:1px solid rgba(47,54,59,.25);box-shadow:0 25px 60px rgba(31,39,46,.25);
+  color:#202a31;isolation:isolate
+}
+.artist-card:before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(30deg,transparent 0 47%,rgba(201,154,69,.12) 47.2% 47.6%,transparent 47.8%),
+  linear-gradient(150deg,transparent 0 63%,rgba(44,73,89,.09) 63.2% 63.6%,transparent 63.8%)
+}
+.artist-card:after{
+  content:"";position:absolute;inset:8px;border:1px solid rgba(52,61,67,.22);
+  border-radius:13px;pointer-events:none
+}
+.pattern{position:absolute;inset:0;opacity:.24;pointer-events:none;background-image:
+  repeating-linear-gradient(45deg,transparent 0 13px,rgba(50,60,65,.05) 13px 14px),
+  repeating-linear-gradient(-45deg,transparent 0 21px,rgba(201,154,69,.06) 21px 22px);
+  mix-blend-mode:multiply
+}
+.corner{position:absolute;width:190px;height:190px;border-radius:50%;border:1px solid rgba(201,154,69,.34)}
+.c1{right:-75px;top:-80px}.c2{left:-125px;bottom:-120px;width:260px;height:260px}
+.header{position:absolute;top:25px;left:32%;right:6%;text-align:center}
+.brand{font-family:Georgia,"Times New Roman",serif;font-weight:900;font-size:clamp(19px,3.1vw,33px);letter-spacing:4px}
+.rule{height:2px;width:72%;margin:8px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.photo{
+  position:absolute;left:5%;top:22%;width:25%;height:59%;
+  border:5px solid rgba(255,255,255,.7);outline:1px solid rgba(57,66,72,.35);
+  background:#d7d4ca;overflow:hidden;box-shadow:0 9px 20px rgba(30,38,43,.15)
+}
+.photo img{position:absolute;max-width:none;display:block}
+.photo.empty:before{content:"AVATAR";position:absolute;inset:0;display:grid;place-items:center;color:#899097;font-size:12px;font-weight:900;letter-spacing:2px}
+.info{position:absolute;left:34%;right:7%;top:29%;display:grid;gap:15px}
+.row{display:grid;grid-template-columns:35% 65%;align-items:end}
+.k{color:#69757d;font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}
+.v{font-size:clamp(13px,2vw,20px);font-weight:750;border-bottom:1px solid rgba(35,45,55,.18);padding-bottom:5px;min-height:26px}
+.artist-name{font-family:Georgia,"Times New Roman",serif;font-size:clamp(16px,2.4vw,25px)}
+.id{position:absolute;right:7%;bottom:13%;font-family:monospace;font-size:clamp(11px,1.7vw,17px);font-weight:800;letter-spacing:2px}
+.footer-note{position:absolute;left:34%;bottom:7%;font-size:8px;letter-spacing:1.1px;color:#7c858a}
+.watermark{position:absolute;right:6%;bottom:5%;font-size:clamp(28px,5vw,54px);font-family:Georgia,serif;font-weight:900;letter-spacing:5px;color:rgba(40,52,59,.07);transform:rotate(-12deg);pointer-events:none}
+.seal{position:absolute;left:30%;bottom:8%;width:58px;height:58px;border-radius:50%;border:2px solid rgba(201,154,69,.55);display:grid;place-items:center;font-size:8px;font-weight:900;letter-spacing:1px;color:#9b7638}
+@media(max-width:620px){
+  body{padding:18px 10px 35px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}
+  .actions{flex-wrap:wrap}.actions button{flex:1}
+  .artist-card{border-radius:12px}.header{top:17px;left:31%}
+  .photo{left:4.5%;top:25%;width:26%;height:51%;border-width:3px}
+  .info{left:34%;top:28%;gap:9px}.row{grid-template-columns:1fr}
+  .k{font-size:7px}.v{font-size:11px;min-height:18px;padding-bottom:3px}
+  .brand{font-size:15px;letter-spacing:2px}.rule{margin-top:4px}
+  .seal{width:38px;height:38px;font-size:5px;left:29%;bottom:7%}
+  .footer-note{left:34%;bottom:6%;font-size:5px}.id{bottom:12%;font-size:8px}
+}
+</style>
 </head>
 <body>
+<div class="wrap">
+  <h1>ANILANDS CUP</h1>
+  <div class="sub">Artist Card Generator</div>
 
-<div class="card">
-  <div class="header">
-    <h2><i class="fa-solid fa-file-pen" style="color: #2563eb;"></i> Biểu Mẫu Đăng Ký Sơ Tuyển</h2>
+  <div class="panel">
+    <div class="form">
+      <div class="field">
+        <label for="artist">TÊN ARTIST</label>
+        <input id="artist" type="text" placeholder="Nhập tên artist" maxlength="40">
+      </div>
+
+      <div class="field">
+        <label for="birthday">SINH NHẬT</label>
+        <input id="birthday" type="text" inputmode="numeric" placeholder="DD / MM" maxlength="5">
+      </div>
+
+      <div class="field full">
+        <label for="avatar">ẢNH AVATAR</label>
+        <input id="avatar" class="file" type="file" accept="image/png,image/jpeg,image/webp">
+        <div id="avatarEditor" style="display:none;margin-top:8px;padding:9px;border:1px solid #ddd;background:#fafafa">
+          <label style="display:flex;align-items:center;gap:8px;font-size:11px">
+            Zoom
+            <input id="zoom" type="range" min="1" max="3" step=".01" value="1" style="height:auto;padding:0">
+          </label>
+          <div style="font-size:11px;color:#777;margin-top:5px">Kéo ảnh trực tiếp trong khung để căn vị trí.</div>
+        </div>
+        <div id="photoEditor" class="photo-editor">
+          <div class="editor-label">CĂN CHỈNH ẢNH</div>
+          <div id="cropArea" class="crop-area"></div>
+          <div class="controls">
+            <button type="button" onclick="zoomPhoto(-0.1)">− Zoom</button>
+            <button type="button" onclick="zoomPhoto(0.1)">+ Zoom</button>
+            <button type="button" class="wide" onclick="resetPhoto()">Đặt lại vị trí</button>
+          </div>
+          <div class="tip">Kéo ảnh để di chuyển · dùng Zoom để phóng to/thu nhỏ</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button onclick="createCard()">Tạo Card</button>
+      <button class="secondary" onclick="downloadCard()">Tải Card PNG</button>
+    </div>
   </div>
 
-  <form id="registerForm">
-    <div class="form-group">
-      <label for="artistName">Tên Artist</label>
-      <div class="input-wrapper">
-        <i class="fa-solid fa-user"></i>
-        <input type="text" id="artistName" placeholder="Nhập tên của bạn..." required>
+  <div class="preview-title">PREVIEW</div>
+
+  <div class="card-shell">
+    <div id="card" class="artist-card">
+      <div class="pattern"></div>
+      <div class="corner c1"></div>
+      <div class="corner c2"></div>
+
+      <div class="header">
+        <div class="brand">ANILANDS CUP</div>
+        <div class="rule"></div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="dob">Ngày / Tháng sinh</label>
-      <div class="input-wrapper">
-        <i class="fa-solid fa-calendar-days"></i>
-        <input type="text" id="dob" placeholder="DD/MM" required>
+      <div id="photo" class="photo empty"></div>
+
+      <div class="info">
+        <div class="row">
+          <div class="k">Artist</div>
+          <div id="outArtist" class="v artist-name">Artist Name</div>
+        </div>
+        <div class="row">
+          <div class="k">Sinh nhật</div>
+          <div id="outBirthday" class="v">-- / -- / ----</div>
+        </div>
+        <div class="row">
+          <div class="k">ID2</div>
+          <div id="outId" class="v">------</div>
+        </div>
       </div>
+
+      <div class="seal">AC<br>ARTIST</div>
+      <div id="outValid" class="footer-note">CÓ HIỆU LỰC TỪ: --/--/---- --:--:--</div>
+      <div class="watermark">AC</div>
+      <div id="cardId" class="id">ID2 • ------</div>
     </div>
-
-    <div class="form-group">
-      <label for="facebook">Link Facebook</label>
-      <div class="input-wrapper">
-        <i class="fa-brands fa-facebook"></i>
-        <input type="url" id="facebook" placeholder="https://facebook.com/..." required>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="bio">Giới thiệu bản thân</label>
-      <div class="input-wrapper">
-        <i class="fa-solid fa-comment-dots" style="top: 20px;"></i>
-        <textarea id="bio" placeholder="Mô tả ngắn về bản thân..." required></textarea>
-      </div>
-    </div>
-
-    <div class="notice-box">
-      <ul>
-        <li><i class="fa-solid fa-paperclip" style="margin-top: 2px;"></i> Hãy nhớ đính kèm vào email tranh bạn vẽ (tối thiểu 2 và tối đa 5).</li>
-        <li><i class="fa-solid fa-circle-check" style="margin-top: 2px;"></i> Bạn đồng ý các thỏa thuận về việc tham dự sự kiện.</li>
-        <li><i class="fa-solid fa-bell" style="margin-top: 2px;"></i> Chúng tôi sẽ liên hệ thông qua email và Facebook. Vui lòng kiểm tra thường xuyên và mở khóa trang Facebook cá nhân.</li>
-      </ul>
-    </div>
-
-    <button type="submit" class="btn-submit">
-      <i class="fa-solid fa-paper-plane"></i> Đăng Ký Qua Email
-    </button>
-  </form>
-
-  <div class="footer">
-    <p>Gửi bởi Ban quản lý Sự kiện, <strong>NTT</strong></p>
   </div>
+  <div class="hint">Ảnh avatar sẽ tự căn vào khung như ảnh trên thẻ ID.</div>
 </div>
 
 <script>
-  document.getElementById('registerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+let currentId=null,currentCreated=null,avatarData=null;
+let editorImg=null;
+let imgX=0,imgY=0,imgScale=1;
+let drag=false,startX=0,startY=0,baseX=0,baseY=0;
 
-    // Lấy thông tin từ các ô nhập
-    const name = document.getElementById('artistName').value;
-    const dob = document.getElementById('dob').value;
-    const fb = document.getElementById('facebook').value;
-    const bio = document.getElementById('bio').value;
+function randomId(){return Math.floor(100000+Math.random()*900000).toString()}
+function formatDate(value){
+  if(!value)return "-- / -- / ----";
+  const [y,m,d]=value.split("-");
+  return `${d} / ${m} / ${y}`;
+}
+function formatDateTime(date){
+  const p=n=>String(n).padStart(2,"0");
+  return `${p(date.getDate())}/${p(date.getMonth()+1)}/${date.getFullYear()} ${p(date.getHours())}:${p(date.getMinutes())}:${p(date.getSeconds())}`;
+}
+function createCard(){
+  const artist=document.getElementById("artist").value.trim()||"Artist Name";
+  const birthday=document.getElementById("birthday").value;
+  currentId=randomId();
+  currentCreated=new Date();
+  document.getElementById("outArtist").textContent=artist;
+  document.getElementById("outBirthday").textContent=formatDate(birthday);
+  document.getElementById("outId").textContent=currentId;
+  document.getElementById("cardId").textContent="ID2 • "+currentId;
+  document.getElementById("outValid").textContent="CÓ HIỆU LỰC TỪ: "+formatDateTime(currentCreated);
+}
 
-    const emailTo = "anilandstu.onl@gmail.com";
-    const subject = "Biểu mẫu đăng ký sơ tuyển - " + name;
+function fitNewImage(){
+  const area=document.getElementById("cropArea");
+  if(!editorImg)return;
+  const aw=area.clientWidth,ah=area.clientHeight;
+  const scale=Math.max(aw/editorImg.naturalWidth,ah/editorImg.naturalHeight);
+  imgScale=scale;
+  imgX=(aw-editorImg.naturalWidth*scale)/2;
+  imgY=(ah-editorImg.naturalHeight*scale)/2;
+  renderEditor();
+  updateCardPhoto();
+}
+function renderEditor(){
+  if(!editorImg)return;
+  editorImg.style.width=editorImg.naturalWidth*imgScale+"px";
+  editorImg.style.height=editorImg.naturalHeight*imgScale+"px";
+  editorImg.style.left=imgX+"px";
+  editorImg.style.top=imgY+"px";
+}
+function renderCardPhoto(){
+  const photo=document.getElementById("photo");
+  if(!editorImg)return;
+  photo.classList.remove("empty");
+  photo.innerHTML="";
+  const img=document.createElement("img");
+  img.src=avatarData;
+  img.style.width=editorImg.naturalWidth*imgScale+"px";
+  img.style.height=editorImg.naturalHeight*imgScale+"px";
 
-    // Soạn sẵn nội dung Email
-    const body = `Xin chào Artist,
+  const cardW=photo.clientWidth,cardH=photo.clientHeight;
+  // Editor and card use the same image framing ratio, so scale the position proportionally.
+  const area=document.getElementById("cropArea");
+  const sx=cardW/area.clientWidth,sy=cardH/area.clientHeight;
+  img.style.left=(imgX*sx)+"px";
+  img.style.top=(imgY*sy)+"px";
+  photo.style.overflow="hidden";
+  img.style.position="absolute";
+  photo.appendChild(img);
+}
+function updateCardPhoto(){renderCardPhoto()}
+function zoomPhoto(amount){
+  if(!editorImg)return;
+  const area=document.getElementById("cropArea");
+  const cx=area.clientWidth/2,cy=area.clientHeight/2;
+  const old=imgScale;
+  imgScale=Math.max(old*0.5,Math.min(old*4,old*(1+amount)));
+  imgX=cx-(cx-imgX)*(imgScale/old);
+  imgY=cy-(cy-imgY)*(imgScale/old);
+  renderEditor();updateCardPhoto();
+}
+function resetPhoto(){fitNewImage()}
 
-Tên Artist: ${name}
-Ngày/tháng sinh: ${dob}
-Link facebook: ${fb}
-Giới thiệu bản thân: ${bio}
+function pointerDown(e){
+  if(!editorImg)return;
+  drag=true;
+  const p=e.touches?e.touches[0]:e;
+  startX=p.clientX;startY=p.clientY;baseX=imgX;baseY=imgY;
+  document.getElementById("cropArea").classList.add("dragging");
+}
+function pointerMove(e){
+  if(!drag)return;
+  const p=e.touches?e.touches[0]:e;
+  imgX=baseX+(p.clientX-startX);
+  imgY=baseY+(p.clientY-startY);
+  renderEditor();updateCardPhoto();
+  if(e.cancelable)e.preventDefault();
+}
+function pointerUp(){
+  drag=false;
+  document.getElementById("cropArea").classList.remove("dragging");
+}
 
-- [LƯU Ý] Tôi sẽ đính kèm tối thiểu 2 và tối đa 5 tranh vẽ vào email này.
-- Tôi đồng ý các thỏa thuận về việc tham dự sự kiện.
-- Tôi sẽ kiểm tra email/facebook thường xuyên và đảm bảo đã mở khóa trang facebook cá nhân.
+const cropArea=document.getElementById("cropArea");
+cropArea.addEventListener("mousedown",pointerDown);
+window.addEventListener("mousemove",pointerMove);
+window.addEventListener("mouseup",pointerUp);
+cropArea.addEventListener("touchstart",pointerDown,{passive:false});
+window.addEventListener("touchmove",pointerMove,{passive:false});
+window.addEventListener("touchend",pointerUp);
 
-Gửi bởi Ban quản lý Sự kiện,
-NTT`;
+const avatarInput=document.getElementById("avatar");
+const avatarEditor=document.getElementById("avatarEditor");
+const zoomInput=document.getElementById("zoom");
+const photo=document.getElementById("photo");
+let avatarImg=null, imgX=0, imgY=0, zoom=1;
+let dragging=false, sx=0, sy=0, bx=0, by=0;
 
-    // Tạo link mailto và chuyển hướng tới trình duyệt mail
-    const mailtoUrl = `mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoUrl;
+function applyAvatar(){
+  if(avatarImg) avatarImg.style.transform=`translate(${imgX}px,${imgY}px) scale(${zoom})`;
+}
+avatarInput.addEventListener("change",e=>{
+  const file=e.target.files[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    avatarData=ev.target.result;
+    photo.classList.remove("empty"); photo.innerHTML="";
+    avatarImg=document.createElement("img");
+    avatarImg.src=avatarData; avatarImg.draggable=false;
+    photo.appendChild(avatarImg);
+    imgX=0; imgY=0; zoom=1; zoomInput.value=1;
+    avatarEditor.style.display="block";
+    avatarImg.onload=applyAvatar;
+  };
+  reader.readAsDataURL(file);
+});
+zoomInput.addEventListener("input",()=>{zoom=+zoomInput.value;applyAvatar()});
+function pos(e){
+  const q=e.touches?e.touches[0]:e;
+  return {x:q.clientX,y:q.clientY};
+}
+function down(e){
+  if(!avatarImg)return;
+  e.preventDefault(); dragging=true;
+  const q=pos(e); sx=q.x; sy=q.y; bx=imgX; by=imgY;
+}
+function move(e){
+  if(!dragging)return;
+  e.preventDefault();
+  const q=pos(e); imgX=bx+q.x-sx; imgY=by+q.y-sy; applyAvatar();
+}
+function up(){dragging=false}
+photo.addEventListener("mousedown",down);
+window.addEventListener("mousemove",move);
+window.addEventListener("mouseup",up);
+photo.addEventListener("touchstart",down,{passive:false});
+window.addEventListener("touchmove",move,{passive:false});
+window.addEventListener("touchend",up);
+
+createCard();
+  if(!window.html2canvas){
+    await new Promise((resolve,reject)=>{
+      const s=document.createElement("script");
+      s.src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+      s.onload=resolve;s.onerror=reject;document.head.appendChild(s);
+    });
+  }
+  updateCardPhoto();
+  const canvas=await html2canvas(document.getElementById("card"),{
+    scale:3,useCORS:true,backgroundColor:null
   });
+  const a=document.createElement("a");
+  a.download=`ANILANDS-CUP-${currentId}.png`;
+  a.href=canvas.toDataURL("image/png");
+  a.click();
+}
+createCard();
 </script>
-
 </body>
 </html>
