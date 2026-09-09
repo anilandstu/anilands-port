@@ -201,178 +201,255 @@ button:hover{opacity:.9}
 </div>
 
 <script>
-let currentId=null,currentCreated=null,avatarData=null;
-let editorImg=null;
-let imgX=0,imgY=0,imgScale=1;
-let drag=false,startX=0,startY=0,baseX=0,baseY=0;
+(() => {
+  "use strict";
 
-function randomId(){return Math.floor(100000+Math.random()*900000).toString()}
-function formatDate(value){
-  if(!value)return "-- / -- / ----";
-  const [y,m,d]=value.split("-");
-  return `${d} / ${m} / ${y}`;
-}
-function formatDateTime(date){
-  const p=n=>String(n).padStart(2,"0");
-  return `${p(date.getDate())}/${p(date.getMonth()+1)}/${date.getFullYear()} ${p(date.getHours())}:${p(date.getMinutes())}:${p(date.getSeconds())}`;
-}
-function createCard(){
-  const artist=document.getElementById("artist").value.trim()||"Artist Name";
-  const birthday=document.getElementById("birthday").value;
-  currentId=randomId();
-  currentCreated=new Date();
-  document.getElementById("outArtist").textContent=artist;
-  document.getElementById("outBirthday").textContent=formatDate(birthday);
-  document.getElementById("outId").textContent=currentId;
-  document.getElementById("cardId").textContent="ID2 • "+currentId;
-  document.getElementById("outValid").textContent="CÓ HIỆU LỰC TỪ: "+formatDateTime(currentCreated);
-}
+  let currentId = "";
+  let currentCreated = null;
+  let avatarData = null;
 
-function fitNewImage(){
-  const area=document.getElementById("cropArea");
-  if(!editorImg)return;
-  const aw=area.clientWidth,ah=area.clientHeight;
-  const scale=Math.max(aw/editorImg.naturalWidth,ah/editorImg.naturalHeight);
-  imgScale=scale;
-  imgX=(aw-editorImg.naturalWidth*scale)/2;
-  imgY=(ah-editorImg.naturalHeight*scale)/2;
-  renderEditor();
-  updateCardPhoto();
-}
-function renderEditor(){
-  if(!editorImg)return;
-  editorImg.style.width=editorImg.naturalWidth*imgScale+"px";
-  editorImg.style.height=editorImg.naturalHeight*imgScale+"px";
-  editorImg.style.left=imgX+"px";
-  editorImg.style.top=imgY+"px";
-}
-function renderCardPhoto(){
-  const photo=document.getElementById("photo");
-  if(!editorImg)return;
-  photo.classList.remove("empty");
-  photo.innerHTML="";
-  const img=document.createElement("img");
-  img.src=avatarData;
-  img.style.width=editorImg.naturalWidth*imgScale+"px";
-  img.style.height=editorImg.naturalHeight*imgScale+"px";
-
-  const cardW=photo.clientWidth,cardH=photo.clientHeight;
-  // Editor and card use the same image framing ratio, so scale the position proportionally.
-  const area=document.getElementById("cropArea");
-  const sx=cardW/area.clientWidth,sy=cardH/area.clientHeight;
-  img.style.left=(imgX*sx)+"px";
-  img.style.top=(imgY*sy)+"px";
-  photo.style.overflow="hidden";
-  img.style.position="absolute";
-  photo.appendChild(img);
-}
-function updateCardPhoto(){renderCardPhoto()}
-function zoomPhoto(amount){
-  if(!editorImg)return;
-  const area=document.getElementById("cropArea");
-  const cx=area.clientWidth/2,cy=area.clientHeight/2;
-  const old=imgScale;
-  imgScale=Math.max(old*0.5,Math.min(old*4,old*(1+amount)));
-  imgX=cx-(cx-imgX)*(imgScale/old);
-  imgY=cy-(cy-imgY)*(imgScale/old);
-  renderEditor();updateCardPhoto();
-}
-function resetPhoto(){fitNewImage()}
-
-function pointerDown(e){
-  if(!editorImg)return;
-  drag=true;
-  const p=e.touches?e.touches[0]:e;
-  startX=p.clientX;startY=p.clientY;baseX=imgX;baseY=imgY;
-  document.getElementById("cropArea").classList.add("dragging");
-}
-function pointerMove(e){
-  if(!drag)return;
-  const p=e.touches?e.touches[0]:e;
-  imgX=baseX+(p.clientX-startX);
-  imgY=baseY+(p.clientY-startY);
-  renderEditor();updateCardPhoto();
-  if(e.cancelable)e.preventDefault();
-}
-function pointerUp(){
-  drag=false;
-  document.getElementById("cropArea").classList.remove("dragging");
-}
-
-const cropArea=document.getElementById("cropArea");
-cropArea.addEventListener("mousedown",pointerDown);
-window.addEventListener("mousemove",pointerMove);
-window.addEventListener("mouseup",pointerUp);
-cropArea.addEventListener("touchstart",pointerDown,{passive:false});
-window.addEventListener("touchmove",pointerMove,{passive:false});
-window.addEventListener("touchend",pointerUp);
-
-const avatarInput=document.getElementById("avatar");
-const avatarEditor=document.getElementById("avatarEditor");
-const zoomInput=document.getElementById("zoom");
-const photo=document.getElementById("photo");
-let avatarImg=null, imgX=0, imgY=0, zoom=1;
-let dragging=false, sx=0, sy=0, bx=0, by=0;
-
-function applyAvatar(){
-  if(avatarImg) avatarImg.style.transform=`translate(${imgX}px,${imgY}px) scale(${zoom})`;
-}
-avatarInput.addEventListener("change",e=>{
-  const file=e.target.files[0]; if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    avatarData=ev.target.result;
-    photo.classList.remove("empty"); photo.innerHTML="";
-    avatarImg=document.createElement("img");
-    avatarImg.src=avatarData; avatarImg.draggable=false;
-    photo.appendChild(avatarImg);
-    imgX=0; imgY=0; zoom=1; zoomInput.value=1;
-    avatarEditor.style.display="block";
-    avatarImg.onload=applyAvatar;
+  const state = {
+    image: null,
+    x: 0,
+    y: 0,
+    scale: 1,
+    baseScale: 1,
+    dragging: false,
+    startX: 0,
+    startY: 0,
+    baseX: 0,
+    baseY: 0
   };
-  reader.readAsDataURL(file);
-});
-zoomInput.addEventListener("input",()=>{zoom=+zoomInput.value;applyAvatar()});
-function pos(e){
-  const q=e.touches?e.touches[0]:e;
-  return {x:q.clientX,y:q.clientY};
-}
-function down(e){
-  if(!avatarImg)return;
-  e.preventDefault(); dragging=true;
-  const q=pos(e); sx=q.x; sy=q.y; bx=imgX; by=imgY;
-}
-function move(e){
-  if(!dragging)return;
-  e.preventDefault();
-  const q=pos(e); imgX=bx+q.x-sx; imgY=by+q.y-sy; applyAvatar();
-}
-function up(){dragging=false}
-photo.addEventListener("mousedown",down);
-window.addEventListener("mousemove",move);
-window.addEventListener("mouseup",up);
-photo.addEventListener("touchstart",down,{passive:false});
-window.addEventListener("touchmove",move,{passive:false});
-window.addEventListener("touchend",up);
 
-createCard();
-  if(!window.html2canvas){
-    await new Promise((resolve,reject)=>{
-      const s=document.createElement("script");
-      s.src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
-      s.onload=resolve;s.onerror=reject;document.head.appendChild(s);
-    });
+  const $ = id => document.getElementById(id);
+
+  function randomId() {
+    return String(Math.floor(100000 + Math.random() * 900000));
   }
-  updateCardPhoto();
-  const canvas=await html2canvas(document.getElementById("card"),{
-    scale:3,useCORS:true,backgroundColor:null
+
+  function formatBirthday(value) {
+    if (!value) return "-- / --";
+    const digits = value.replace(/\D/g, "").slice(0, 4);
+    if (digits.length < 3) return digits || "-- / --";
+    return digits.slice(0, 2) + " / " + digits.slice(2, 4);
+  }
+
+  function formatDateTime(date) {
+    const pad = n => String(n).padStart(2, "0");
+    return [
+      pad(date.getDate()) + "/" + pad(date.getMonth() + 1) + "/" + date.getFullYear(),
+      pad(date.getHours()) + ":" + pad(date.getMinutes()) + ":" + pad(date.getSeconds())
+    ].join(" ");
+  }
+
+  function createCard() {
+    const artist = ($("artist").value || "").trim() || "Artist Name";
+    const birthdayRaw = ($("birthday").value || "").trim();
+
+    currentId = randomId();
+    currentCreated = new Date();
+
+    $("outArtist").textContent = artist;
+    $("outBirthday").textContent = formatBirthday(birthdayRaw);
+    $("outId").textContent = currentId;
+    $("cardId").textContent = "ID2 • " + currentId;
+    $("outValid").textContent = "CÓ HIỆU LỰC TỪ: " + formatDateTime(currentCreated);
+  }
+
+  function getAreaSize() {
+    const area = $("cropArea");
+    return { w: area.clientWidth, h: area.clientHeight };
+  }
+
+  function renderEditor() {
+    if (!state.image) return;
+    state.image.style.width = (state.image.naturalWidth * state.scale) + "px";
+    state.image.style.height = (state.image.naturalHeight * state.scale) + "px";
+    state.image.style.left = state.x + "px";
+    state.image.style.top = state.y + "px";
+  }
+
+  function fitImage() {
+    if (!state.image) return;
+
+    const { w, h } = getAreaSize();
+    const nw = state.image.naturalWidth;
+    const nh = state.image.naturalHeight;
+
+    if (!nw || !nh) return;
+
+    state.baseScale = Math.max(w / nw, h / nh);
+    state.scale = state.baseScale;
+    state.x = (w - nw * state.scale) / 2;
+    state.y = (h - nh * state.scale) / 2;
+
+    renderEditor();
+    renderCardPhoto();
+  }
+
+  function renderCardPhoto() {
+    const photo = $("photo");
+    if (!state.image || !avatarData) return;
+
+    photo.classList.remove("empty");
+    photo.innerHTML = "";
+
+    const img = document.createElement("img");
+    img.src = avatarData;
+
+    const { w: ew, h: eh } = getAreaSize();
+    const cw = photo.clientWidth;
+    const ch = photo.clientHeight;
+
+    const sx = cw / ew;
+    const sy = ch / eh;
+
+    img.style.position = "absolute";
+    img.style.width = (state.image.naturalWidth * state.scale * sx) + "px";
+    img.style.height = (state.image.naturalHeight * state.scale * sy) + "px";
+    img.style.left = (state.x * sx) + "px";
+    img.style.top = (state.y * sy) + "px";
+    img.style.maxWidth = "none";
+    img.style.display = "block";
+
+    photo.appendChild(img);
+  }
+
+  function zoomPhoto(delta) {
+    if (!state.image) return;
+
+    const { w, h } = getAreaSize();
+    const cx = w / 2;
+    const cy = h / 2;
+    const oldScale = state.scale;
+
+    state.scale = Math.max(
+      state.baseScale * 0.7,
+      Math.min(state.baseScale * 4, oldScale * (1 + delta))
+    );
+
+    state.x = cx - (cx - state.x) * (state.scale / oldScale);
+    state.y = cy - (cy - state.y) * (state.scale / oldScale);
+
+    renderEditor();
+    renderCardPhoto();
+  }
+
+  function resetPhoto() {
+    fitImage();
+  }
+
+  function pointerDown(e) {
+    if (!state.image) return;
+    const p = e.touches ? e.touches[0] : e;
+    state.dragging = true;
+    state.startX = p.clientX;
+    state.startY = p.clientY;
+    state.baseX = state.x;
+    state.baseY = state.y;
+    $("cropArea").classList.add("dragging");
+    if (e.cancelable) e.preventDefault();
+  }
+
+  function pointerMove(e) {
+    if (!state.dragging) return;
+    const p = e.touches ? e.touches[0] : e;
+    state.x = state.baseX + (p.clientX - state.startX);
+    state.y = state.baseY + (p.clientY - state.startY);
+    renderEditor();
+    renderCardPhoto();
+    if (e.cancelable) e.preventDefault();
+  }
+
+  function pointerUp() {
+    state.dragging = false;
+    $("cropArea").classList.remove("dragging");
+  }
+
+  // Birthday: chỉ DD/MM
+  $("birthday").addEventListener("input", e => {
+    // Cho phép nhập 2508 hoặc 25/08; tự định dạng thành 25 / 08.
+    let digits = e.target.value.replace(/\D/g, "").slice(0, 4);
+    e.target.value = digits.length > 2
+      ? digits.slice(0, 2) + " / " + digits.slice(2)
+      : digits;
   });
-  const a=document.createElement("a");
-  a.download=`ANILANDS-CUP-${currentId}.png`;
-  a.href=canvas.toDataURL("image/png");
-  a.click();
-}
-createCard();
+
+  // Upload avatar
+  $("avatar").addEventListener("change", e => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = ev => {
+      avatarData = ev.target.result;
+
+      const cropArea = $("cropArea");
+      cropArea.innerHTML = "";
+
+      const img = document.createElement("img");
+      img.src = avatarData;
+      img.alt = "Avatar";
+      state.image = img;
+
+      cropArea.appendChild(img);
+      $("photoEditor").classList.add("show");
+
+      img.onload = () => {
+        fitImage();
+      };
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Drag editor
+  $("cropArea").addEventListener("mousedown", pointerDown);
+  window.addEventListener("mousemove", pointerMove);
+  window.addEventListener("mouseup", pointerUp);
+  $("cropArea").addEventListener("touchstart", pointerDown, { passive: false });
+  window.addEventListener("touchmove", pointerMove, { passive: false });
+  window.addEventListener("touchend", pointerUp);
+
+  // Expose button handlers
+  window.createCard = createCard;
+  window.zoomPhoto = zoomPhoto;
+  window.resetPhoto = resetPhoto;
+
+  // PNG export without external library: draw the visible card into canvas.
+  window.downloadCard = async function () {
+    if (!currentId) createCard();
+
+    try {
+      if (!window.html2canvas) {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+          script.onload = resolve;
+          script.onerror = () => reject(new Error("Không tải được thư viện xuất PNG."));
+          document.head.appendChild(script);
+        });
+      }
+
+      const canvas = await window.html2canvas($("card"), {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: null,
+        logging: false
+      });
+
+      const link = document.createElement("a");
+      link.download = "ANILANDS-CUP-" + currentId + ".png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (err) {
+      console.error(err);
+      alert("Không thể tải PNG. Card vẫn tạo bình thường; hãy thử lại khi có mạng.");
+    }
+  };
+
+  // Initial card
+  createCard();
+})();
 </script>
 </body>
-</html>
+  </html>
