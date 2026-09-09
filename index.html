@@ -129,19 +129,12 @@ button:hover{opacity:.9}
 
       <div class="field">
         <label for="birthday">SINH NHẬT</label>
-        <input id="birthday" type="text" inputmode="numeric" placeholder="DD / MM" maxlength="5">
+        <input id="birthday" type="text" inputmode="numeric" placeholder="DD / MM" maxlength="7">
       </div>
 
       <div class="field full">
         <label for="avatar">ẢNH AVATAR</label>
         <input id="avatar" class="file" type="file" accept="image/png,image/jpeg,image/webp">
-        <div id="avatarEditor" style="display:none;margin-top:8px;padding:9px;border:1px solid #ddd;background:#fafafa">
-          <label style="display:flex;align-items:center;gap:8px;font-size:11px">
-            Zoom
-            <input id="zoom" type="range" min="1" max="3" step=".01" value="1" style="height:auto;padding:0">
-          </label>
-          <div style="font-size:11px;color:#777;margin-top:5px">Kéo ảnh trực tiếp trong khung để căn vị trí.</div>
-        </div>
         <div id="photoEditor" class="photo-editor">
           <div class="editor-label">CĂN CHỈNH ẢNH</div>
           <div id="cropArea" class="crop-area"></div>
@@ -366,14 +359,30 @@ button:hover{opacity:.9}
     $("cropArea").classList.remove("dragging");
   }
 
-  // Birthday: chỉ DD/MM
+  // Birthday: cho phép gõ 1311 hoặc 13/11, luôn hiển thị 13 / 11
   $("birthday").addEventListener("input", e => {
-    // Cho phép nhập 2508 hoặc 25/08; tự định dạng thành 25 / 08.
-    let digits = e.target.value.replace(/\D/g, "").slice(0, 4);
-    e.target.value = digits.length > 2
-      ? digits.slice(0, 2) + " / " + digits.slice(2)
-      : digits;
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 4);
+    e.target.value = digits.length <= 2
+      ? digits
+      : digits.slice(0, 2) + " / " + digits.slice(2, 4);
   });
+
+  // Zoom slider
+  if ($("zoom")) {
+    $("zoom").addEventListener("input", e => {
+      if (!state.image) return;
+      const oldScale = state.scale;
+      const target = Math.max(state.baseScale * 0.7,
+        Math.min(state.baseScale * 4, Number(e.target.value)));
+      const { w, h } = getAreaSize();
+      const cx = w / 2, cy = h / 2;
+      state.scale = target;
+      state.x = cx - (cx - state.x) * (state.scale / oldScale);
+      state.y = cy - (cy - state.y) * (state.scale / oldScale);
+      renderEditor();
+      renderCardPhoto();
+    });
+  }
 
   // Upload avatar
   $("avatar").addEventListener("change", e => {
@@ -452,4 +461,4 @@ button:hover{opacity:.9}
 })();
 </script>
 </body>
-  </html>
+</html>
