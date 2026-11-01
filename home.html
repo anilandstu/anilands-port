@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ANILANDS — Artist</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar"><a class="wordmark" href="home.html">ANILANDS</a><button id="logoutBtn" class="outline-btn">Đăng xuất</button></header>
+  <main class="dashboard">
+    <p class="eyebrow">ARTIST SPACE</p>
+    <h1>Xin chào, <span id="artistName">Artist</span></h1>
+    <section id="statusCard" class="status-card silver">
+      <p class="card-kicker">TÀI KHOẢN ARTIST</p>
+      <div class="status-line"><span>UUID</span><strong id="uuid">—</strong></div>
+      <div class="status-line"><span>Trạng thái</span><strong id="statusText">Đang tải...</strong></div>
+    </section>
+    <section class="info-card">
+      <div class="info-row"><span>Gmail</span><strong id="email">—</strong></div>
+      <div class="info-row"><span>Facebook</span><a id="facebook" href="#" target="_blank" rel="noopener">Chưa có</a></div>
+      <div class="info-row"><span>Coin</span><strong id="coin">0</strong></div>
+    </section>
+    <p class="hint">admin Sự kiện sẽ liên hệ bạn thông qua facebook bạn đã cung cấp.</p>
+    <section class="info-card approved-list">
+      <h2>Danh sách Artist đã được duyệt</h2>
+      <div id="approvedArtists" class="artist-list">Đang tải...</div>
+    </section>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

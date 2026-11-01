@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ANILANDS — Đăng nhập</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+  <main class="auth-shell">
+    <section class="brand-panel">
+      <div class="brand-mark">A</div>
+      <p class="eyebrow">ARTIST COMMUNITY</p>
+      <h1>ANILANDS</h1>
+      <p class="brand-caption">A place for artists.</p>
+    </section>
+
+    <section class="auth-card">
+      <div class="tabs">
+        <button class="tab active" data-tab="login" type="button">Đăng nhập</button>
+        <button class="tab" data-tab="register" type="button">Đăng ký</button>
+      </div>
+
+      <form id="loginForm" class="form-panel">
+        <h2>Chào mừng trở lại</h2>
+        <label>Tên Artist hoặc Gmail<input name="identity" autocomplete="username" required></label>
+        <label>Mật khẩu<input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="primary-btn" type="submit">Đăng nhập</button>
+        <button class="text-btn" id="forgotBtn" type="button">Quên mật khẩu?</button>
+      </form>
+
+      <form id="registerForm" class="form-panel hidden">
+        <h2>Tạo tài khoản Artist</h2>
+        <label>Tên Artist<input name="artistName" maxlength="40" required></label>
+        <label>Gmail<input name="email" type="email" autocomplete="email" required></label>
+        <label>Mật khẩu<input name="password" type="password" minlength="8" autocomplete="new-password" required></label>
+        <label>Facebook link<input name="facebook" type="url" placeholder="https://facebook.com/..." required></label>
+        <button class="primary-btn" type="submit">Tạo tài khoản</button>
+        <p class="privacy">Thông tin của bạn được bảo mật hoàn toàn từ phía người tổ chức.</p>
+      </form>
+      <p id="notice" class="notice" role="status"></p>
+    </section>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
